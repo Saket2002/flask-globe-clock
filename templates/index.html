@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🌍 Live Clocks of All Countries</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #0f0;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .clock {
+      background: #222;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #0f0;
+      text-align: center;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+    .country {
+      font-weight: bold;
+      color: #ff0;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .time {
+      font-size: 18px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Live Clocks for All Countries</h1>
+  <div class="grid">
+    {% for country, tz in countries.items() %}
+      <div class="clock">
+        <div class="country">{{ country }}</div>
+        <div class="time" id="{{ tz|replace('/', '_') }}"></div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    const countries = {{ countries|tojson }};
+    
+    function updateClocks() {
+      for (const [country, tz] of Object.entries(countries)) {
+        const time = new Date().toLocaleTimeString('en-US', {
+          timeZone: tz,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        });
+        const el = document.getElementById(tz.replace(/\//g, '_'));
+        if (el) el.textContent = time;
+      }
+    }
+    
+    setInterval(updateClocks, 1000);
+    updateClocks(); // initial call
+  </script>
+</body>
+</html>
