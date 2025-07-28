@@ -4,8 +4,6 @@
 An interactive web app showing live clocks for all countries pinned on a 3D globe.
 
 ## Features
-
-- Displays a 3D rotating globe with country locations.
 - Shows live local time for each country on hover.
 - Built with Flask (Python backend) and Globe.gl + Three.js (frontend).
 - Uses JavaScript to update clocks every second.
